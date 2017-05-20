@@ -319,6 +319,7 @@ big_integer operator<<(big_integer const& first, int shift)
 	size_t size = static_cast<size_t>(first.data.size() + div + 1);
 	vector <unsigned int> temp(size);
 	temp[div] = static_cast<unsigned int>(first.getDigit(0) << mod);
+	temp[div + 1] = static_cast<unsigned int>(first.getDigit(0) >> (numberOfDigits - mod));
 	for (size_t i = static_cast<size_t>(div + 1); i < size; i++)
 	{
 		unsigned int firstDigit = first.getDigit(static_cast<unsigned int>(i - div));

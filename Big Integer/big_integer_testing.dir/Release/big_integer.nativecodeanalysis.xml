@@ -14,4 +14,18 @@
     <FUNCLINE>47</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>d:\cpp-course\bigint\</FILEPATH>
+      <FILENAME>big_integer.cpp</FILENAME>
+      <LINE>704</LINE>
+      <COLUMN>46</COLUMN>
+    </SFA>
+    <DEFECTCODE>6323</DEFECTCODE>
+    <DESCRIPTION>Использование арифметического оператора в одном или нескольких типах Boolean.</DESCRIPTION>
+    <FUNCTION>/</FUNCTION>
+    <DECORATED>??K@YA?AUbig_integer@@ABU0@0@Z</DECORATED>
+    <FUNCLINE>673</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
 </DEFECTS>
