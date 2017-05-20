@@ -488,7 +488,8 @@ big_integer& big_integer::operator*=(big_integer const& other)
 	return *this;
 }
 
-const vector <unsigned int> bases = {
+const vector <unsigned int> bases = 
+{
 	1,
 	10,
 	100,
@@ -637,7 +638,7 @@ unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 		divisor *= multiplier;
 	}
 	divisor = divisor << numberOfDigits;
-	for (unsigned int i = 0; i <= 1; i++)
+	for (size_t i = 0; i <= 1; i++)
 	{
 		unsigned int dig = 0;
 		if (divident >= divisor)

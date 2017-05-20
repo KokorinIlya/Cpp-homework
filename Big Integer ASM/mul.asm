@@ -11,7 +11,7 @@ global          _start
 %define FirstCopy rbp
 
 _start:
-	sub 			stack_pointer, 4 * 128 * 8
+	sub 			stack_pointer, 4 * 128 * 8 ;allocate memory
 
 	lea 			First, [stack_pointer + 128 * 8] ;lea moves adress of the second operand to the first. x = [sp + 128 * 8]
                                                                  ;lea moves adress of x to Firsrt => First = sp + 128 * 8
