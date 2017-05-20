@@ -117,6 +117,7 @@ private:
 	friend big_integer transformStringToBigInteger(std::string const& str);
 	friend big_integer getHighDigits(big_integer const& number, size_t n);
 	bool isMoreThan0();
+	friend unsigned int getNextDigit(big_integer const& first, big_integer const& second);
 
 	//данные:
 	bool sign;

@@ -72,7 +72,7 @@ string indexToString(size_t i) noexcept
 	return res;
 }
 
-string constructErrorPointer(const string& expr, int index)
+string constructErrorPointer(const string& expr, size_t index)
 {
 	string res = expr + "\n";
 	for (size_t i = 0; i < index; i++)
@@ -318,7 +318,7 @@ big_integer operator<<(big_integer const& first, int shift)
 	//casts are safe, shift > 0, numberOfDigits > 0
 	size_t size = static_cast<size_t>(first.data.size() + div + 1);
 	vector <unsigned int> temp(size);
-	temp[div] = (first.getDigit(0) << mod);
+	temp[div] = static_cast<unsigned int>(first.getDigit(0) << mod);
 	for (size_t i = static_cast<size_t>(div + 1); i < size; i++)
 	{
 		unsigned int firstDigit = first.getDigit(static_cast<unsigned int>(i - div));
@@ -622,33 +622,39 @@ big_integer getHighDigits(big_integer const& number, size_t n) //получает вектор
 
 unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 {
-	big_integer absFirst = getHighDigits(first, 5); //будем делить 5 цифр на 4
-	big_integer absSecond = getHighDigits(second, 4);
-	if (absFirst < absSecond) //деление целочисленное, так что x / y == 0, если y > x
+	big_integer divident = getHighDigits(first, 5); //будем делить 5 цифр на 4
+	big_integer divisor = getHighDigits(second, 4);
+	if (divident < divisor) //деление целочисленное, так что x / y == 0, если y > x
 	{
 		return 0;
 	}
-	absSecond = absSecond << numberOfDigits;
+	if (divisor.getDigit(divisor.data.size() - 1) < base / 2)
+	{
+		unsigned int multiplier = (base / 2) / divisor.getDigit(divisor.data.size() - 1) + 1;
+		divident *= multiplier;
+		divisor *= multiplier;
+	}
+	divisor = divisor << numberOfDigits;
 	for (unsigned int i = 0; i <= 1; i++)
 	{
 		unsigned int dig = 0;
-		if (absFirst >= absSecond)
+		if (divident >= divisor)
 		{
 			for (int j = numberOfDigits - 1; j >= 0; j--)
 			{
 				unsigned int nw = dig + (1 << j);
-				if (nw * absSecond <= absFirst)
+				if (nw * divisor <= divident)
 				{
 					dig = nw;
 				}
 			}
-			absFirst = absFirst - dig * absSecond;
+			divident = divident - dig * divisor;
 		}
 		if (dig > 0)
 		{
 			return dig;
 		}
-		absSecond = absSecond >> numberOfDigits;
+		divisor = divisor >> numberOfDigits;
 	}
 	return 0;
 }
@@ -672,13 +678,13 @@ big_integer operator/(big_integer const& first, big_integer const& second) {
 		result.setSign(sign);
 		return result;
 	}
-	size_t t = absFirst.data.size() - absSecond.data.size();
-	if (absFirst < absSecond << static_cast<unsigned int>(t) * numberOfDigits)
+	size_t size = absFirst.data.size() - absSecond.data.size();
+	if (absFirst < absSecond << static_cast<unsigned int>(size) * numberOfDigits)
 	{
-		t--;
+		size--;
 	}
 	vector<unsigned int> temp;
-	for (int i = t; i >= 0; i--)
+	for (int i = size; i >= 0; i--)
 	{
 		unsigned int dig = getNextDigit(absFirst, absSecond);
 		big_integer tmp = dig * absSecond;

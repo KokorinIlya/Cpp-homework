@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>d:\cpp-course\bigint\gtest\</FILEPATH>
+      <FILENAME>gtest.h</FILENAME>
+      <LINE>10316</LINE>
+      <COLUMN>6</COLUMN>
+    </SFA>
+    <DEFECTCODE>6326</DEFECTCODE>
+    <DESCRIPTION>Возможное сравнение константы с другой константой.</DESCRIPTION>
+    <FUNCTION>testing::internal::ValuesInIteratorRangeGenerator&lt;bool&gt;::Iterator::Equals</FUNCTION>
+    <DECORATED>?Equals@Iterator@?$ValuesInIteratorRangeGenerator@_N@internal@testing@@UBE_NABV?$ParamIteratorInterface@_N@34@@Z</DECORATED>
+    <FUNCLINE>10313</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>d:\cpp-course\bigint\gtest\</FILEPATH>
+      <FILENAME>gtest.h</FILENAME>
+      <LINE>2254</LINE>
+      <COLUMN>2</COLUMN>
+    </SFA>
+    <DEFECTCODE>6326</DEFECTCODE>
+    <DESCRIPTION>Возможное сравнение константы с другой константой.</DESCRIPTION>
+    <FUNCTION>testing::internal::CheckedDowncastToActualType</FUNCTION>
+    <DECORATED>??$CheckedDowncastToActualType@$$CBVIterator@?$ValuesInIteratorRangeGenerator@_N@internal@testing@@$$CBV?$ParamIteratorInterface@_N@34@@internal@testing@@YAPBVIterator@?$ValuesInIteratorRangeGenerator@_N@01@PBV?$ParamIteratorInterface@_N@01@@Z</DECORATED>
+    <FUNCLINE>2252</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
