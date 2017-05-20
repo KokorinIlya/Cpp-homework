@@ -23,7 +23,7 @@ public:
 	big_integer(unsigned long long x); //конструктор от unsigned long long
 	explicit big_integer(std::string const& str); //explicit-конструктор от строки
 
-												  //деструктор не нужен, мы можем положиться на стандартный, так как не работаем с динамической памятью
+												  //деструктор не нужен, мы можем положиться на стандартный, так как не выделяем память сами
 
 	big_integer& operator=(big_integer const& other); //Оператор присваивания
 

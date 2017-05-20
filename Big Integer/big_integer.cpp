@@ -110,7 +110,7 @@ void big_integer::normalize()
 big_integer::big_integer(int x)
 {
 	sign = (x < 0);
-	data = vector<unsigned int>{ static_cast<unsigned int>(x & (base - 1)) };
+	data = vector<unsigned int>{static_cast<unsigned int>(x)};
 }
 
 big_integer::big_integer(unsigned long long x)
@@ -208,7 +208,7 @@ big_integer operator~(big_integer const& a)
 	vector <unsigned int> temp(size);
 	for (size_t i = 0; i < size; i++)
 	{
-		temp[i] = ~a.getDigit(i) & static_cast<unsigned int>(base - 1);
+		temp[i] = ~a.getDigit(i);
 	}
 	return big_integer(temp, !a.isNegative());
 }
@@ -624,13 +624,15 @@ unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 {
 	big_integer divident = getHighDigits(first, 5); //будем делить 5 цифр на 4
 	big_integer divisor = getHighDigits(second, 4);
+	big_integer copyDivident(divident);
+	big_integer copyDivisor(divisor);
 	if (divident < divisor) //деление целочисленное, так что x / y == 0, если y > x
 	{
 		return 0;
 	}
 	if (divisor.getDigit(divisor.data.size() - 1) < base / 2)
 	{
-		unsigned int multiplier = (base / 2) / divisor.getDigit(divisor.data.size() - 1) + 1;
+		unsigned int multiplier = (base / 2) / divisor.getDigit(divisor.data.size() - 1) + 2;
 		divident *= multiplier;
 		divisor *= multiplier;
 	}
@@ -652,7 +654,14 @@ unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 		}
 		if (dig > 0)
 		{
-			return dig;
+			while (dig > 0 && dig * copyDivisor > copyDivident)
+			{
+				dig--;
+			}
+			if (dig > 0)
+			{
+				return dig;
+			}
 		}
 		divisor = divisor >> numberOfDigits;
 	}
@@ -688,18 +697,18 @@ big_integer operator/(big_integer const& first, big_integer const& second) {
 	{
 		unsigned int dig = getNextDigit(absFirst, absSecond);
 		big_integer tmp = dig * absSecond;
-		long long carry = 0;
-		for (size_t j = static_cast<unsigned int>(i); j < absFirst.data.size(); j++) //cast is safe: i >= 0
+		bool needCarry = false;
+		for (size_t j = static_cast<size_t>(i); j < absFirst.data.size(); j++) //cast is safe: i >= 0
 		{
-			long long res = absFirst.getDigit(j) - carry;
+			long long res = absFirst.getDigit(j) - 1LL * needCarry;
 			if (j - i < tmp.data.size())
 			{
 				res -= tmp.getDigit(j - i);
 			}
-			carry = 0;
+			needCarry = false;
 			if (res < 0)
 			{
-				carry = 1;
+				needCarry = true;
 				res += base;
 			}
 			absFirst.data[j] = static_cast<unsigned int>(res);
@@ -751,11 +760,11 @@ int operator%(big_integer const& first, unsigned int second)
 
 bool big_integer::isMoreThan0()
 {
-	if (this->data.size() > 1)
+	if (data.size() > 1)
 	{
 		return true;
 	}
-	return (this->getDigit(0) != 0);
+	return (getDigit(0) != 0);
 }
 
 string to_string(big_integer const& arg)
