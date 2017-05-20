@@ -621,8 +621,8 @@ big_integer getHighDigits(big_integer const& number, size_t n) //получает вектор
 
 unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 {
-	big_integer divident = getHighDigits(first, 4); //будем делить 5 цифр на 4
-	big_integer divisor = getHighDigits(second, 3);
+	big_integer divident = getHighDigits(first, 5); //будем делить 5 цифр на 4
+	big_integer divisor = getHighDigits(second, 4);
 	big_integer copyDivident(divident);
 	big_integer copyDivisor(divisor);
 	if (divident < divisor) //деление целочисленное, так что x / y == 0, если y > x
