@@ -31,6 +31,7 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
+#include "big_integer.h"
 
 GTEST_API_ int main(int argc, char **argv) {
   printf("Running main() from gtest_main.cc\n");

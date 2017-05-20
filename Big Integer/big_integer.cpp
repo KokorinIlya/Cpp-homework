@@ -2,9 +2,6 @@
 // Created by Илья Кокорин on 30.04.2017.
 //
 
-#ifndef BIGINT_BIG_INTEGER_IMPL
-#define BIGINT_BIG_INTEGER_IMPL
-
 #include "big_integer.h"
 
 using namespace std;
@@ -624,8 +621,8 @@ big_integer getHighDigits(big_integer const& number, size_t n) //получает вектор
 
 unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 {
-	big_integer divident = getHighDigits(first, 5); //будем делить 5 цифр на 4
-	big_integer divisor = getHighDigits(second, 4);
+	big_integer divident = getHighDigits(first, 4); //будем делить 5 цифр на 4
+	big_integer divisor = getHighDigits(second, 3);
 	big_integer copyDivident(divident);
 	big_integer copyDivisor(divisor);
 	if (divident < divisor) //деление целочисленное, так что x / y == 0, если y > x
@@ -656,7 +653,7 @@ unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 		}
 		if (dig > 0)
 		{
-			while (dig > 0 && dig * copyDivisor > copyDivident)
+			while (dig > 0 && copyDivisor * dig > copyDivident)
 			{
 				dig--;
 			}
@@ -816,5 +813,3 @@ ostream& operator<<(ostream& in, big_integer const& a)
 	in << s;
 	return in;
 }
-
-#endif
