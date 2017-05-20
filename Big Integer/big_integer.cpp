@@ -775,10 +775,10 @@ string to_string(big_integer const& arg)
 	bool isNeg = arg.isNegative();
 	while (absArg.isMoreThan0())
 	{
-		const int blockLen = 9;
-		const int block = bases[blockLen];
+		const unsigned int blockLen = 9;
+		const unsigned int block = bases[blockLen];
 		int t = absArg % block;
-		absArg = absArg / block;
+		absArg /= block;
 		for (int i = 0; i < blockLen; i++)
 		{
 			result.push_back(static_cast<char>('0' + t % 10)); //cast is safe: t % 10 < 10 => '0' + t % 10  <= '9'
