@@ -645,18 +645,10 @@ unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 {
 	big_integer divident = getHighDigits(first, 5); //áóäåì äåëèòü 5 öèôð íà 4
 	big_integer divisor = getHighDigits(second, 4);
-	//big_integer copyDivident(divident);
-	//big_integer copyDivisor(divisor);
 	if (divident < divisor)
 	{
 		return 0;
 	}
-	/*if (divisor.getDigit(divisor.data.size() - 1) < base / 2)
-	{
-		unsigned int multiplier = (base / 2) / divisor.getDigit(divisor.data.size() - 1) + 2;
-		divident *= multiplier;
-		divisor *= multiplier;
-	}*/
 	divisor = divisor << numberOfDigits;
 	for (size_t i = 0; i <= 1; i++)
 	{
