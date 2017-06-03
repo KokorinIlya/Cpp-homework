@@ -1,7 +1,7 @@
 #ifndef BIG_INTEGER_H
 #define BIG_INTEGER_H
 
-#include "vector\myVector.h"
+#include "vector/myVector.h"
 #include <string>
 #include "big_integer_exceptions.h"
 

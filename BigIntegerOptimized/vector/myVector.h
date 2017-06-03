@@ -10,7 +10,7 @@ public:
 	myVector();
 	explicit myVector(size_t needSize);
 	myVector(myVector const &other);
-	myVector::myVector(std::initializer_list<unsigned int> const& list);
+	myVector(std::initializer_list<unsigned int> const& list);
 
 	~myVector();
 
