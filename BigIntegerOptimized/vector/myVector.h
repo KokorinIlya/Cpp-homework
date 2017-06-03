@@ -17,8 +17,6 @@ public:
 	size_t size() const;
 	bool empty() const;
 
-	void resize(size_t sz);
-
 	unsigned int& operator[](size_t ind);
 	unsigned int const& operator[](size_t ind) const;
 

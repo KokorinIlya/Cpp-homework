@@ -151,13 +151,6 @@ unsigned int& myVector::operator[](size_t ind)
 	return arrayPointer[ind];
 }
 
-void myVector::resize(size_t _size) 
-{
-	reserve(_size);
-	memset(arrayPointer + vectorSize, 0, vectorSize - _size);
-	vectorSize = _size;
-}
-
 unsigned int* myVector::getData() const
 {
 	return arrayPointer;
