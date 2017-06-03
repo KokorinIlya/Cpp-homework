@@ -430,11 +430,11 @@ string to_string(big_integer const& arg)
 	bool isNeg = arg.isNegative();
 	while (absArg > 0)
 	{
-		const unsigned int blockLen = 9;
+		const size_t blockLen = 9;
 		const unsigned int block = bases[blockLen];
 		int t = absArg % block;
 		absArg /= block;
-		for (int i = 0; i < blockLen; i++)
+		for (size_t i = 0; i < blockLen; i++)
 		{
 			result.push_back(static_cast<char>('0' + t % 10)); //cast is safe: t % 10 < 10 => '0' + t % 10  <= '9'
 			t /= 10;
