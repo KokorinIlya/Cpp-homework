@@ -172,7 +172,6 @@ bool myVector::empty() const
 
 void myVector::pop_back() 
 {
-	assert(!isBig || data.bigObject.bigObjectPointer.unique());
 	vectorSize--;
 }
 

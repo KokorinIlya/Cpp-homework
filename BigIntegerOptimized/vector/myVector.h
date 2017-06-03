@@ -32,6 +32,7 @@ public:
 	unsigned int* getData();
 
 	friend bool operator==(const myVector &a, const myVector &b);
+	void makeNewVector();
 
 private:
 	size_t vectorSize;
@@ -44,7 +45,6 @@ private:
 	size_t capacityGetter() const;
 	void capacitySetter(size_t _capacity);
 
-	void makeNewVector();
 	void vectorFactory(size_t capacity);
 };
 
