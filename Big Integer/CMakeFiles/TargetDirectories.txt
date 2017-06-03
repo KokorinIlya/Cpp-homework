@@ -1,3 +1,0 @@
-D:/cpp-course/Cpp-homework/Big Integer/CMakeFiles/big_integer_testing.dir
-D:/cpp-course/Cpp-homework/Big Integer/CMakeFiles/edit_cache.dir
-D:/cpp-course/Cpp-homework/Big Integer/CMakeFiles/rebuild_cache.dir

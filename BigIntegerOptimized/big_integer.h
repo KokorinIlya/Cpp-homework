@@ -4,16 +4,13 @@
 #include "vector\myVector.h"
 #include <string>
 #include "big_integer_exceptions.h"
-#include <cstdlib>
 
 struct big_integer
 {
-	typedef unsigned int ui;
-	typedef unsigned long long ull;
 	big_integer();
 	big_integer(big_integer const& other);
 	big_integer(int a);
-	big_integer(ui a);
+	big_integer(unsigned int a);
 	explicit big_integer(std::string const& str);
 
 	big_integer& operator=(big_integer const& other);
@@ -36,8 +33,8 @@ struct big_integer
 	big_integer& operator--();
 	big_integer operator--(int notNeeded);
 
-	big_integer& operator<<=(int other);
-	big_integer& operator>>=(int other);
+	big_integer& operator<<=(int shift);
+	big_integer& operator>>=(int shift);
 
 	friend big_integer operator-(big_integer const& a);
 	friend big_integer operator+(big_integer const& a);
@@ -71,7 +68,6 @@ struct big_integer
 	friend big_integer operator>>(big_integer const &a, int b);
 
 	void swap(big_integer &other) noexcept;
-	//bool is_zero() const;
 	bool isNegative() const;
 	big_integer(bool new_sign, myVector const &new_data);
 private:
@@ -82,7 +78,6 @@ private:
 	unsigned int getInfDigit(size_t ind) const;
 	unsigned int getDigit(size_t ind) const;
 	void normalize();
-	//void correct();
 	void setSign(bool s);
 
 	friend big_integer abstractBitOperation(big_integer const& first, big_integer const& second, char mode);

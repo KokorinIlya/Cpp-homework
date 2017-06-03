@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "myData.h"
+#include <cstring>
 
 struct myVector {
 public:

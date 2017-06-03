@@ -161,7 +161,7 @@ big_integer::big_integer(int a) : sign(a < 0), data{ static_cast <unsigned int>(
 	normalize();
 }
 
-big_integer::big_integer(ui a) : sign(false), data{a}
+big_integer::big_integer(unsigned int a) : sign(false), data{a}
 {
 	normalize();
 }

@@ -3,7 +3,7 @@
 
 const size_t UINT_SIZE = sizeof(unsigned int);
 
-size_t getCapacityForxpansion(const size_t n)
+size_t getCapacityForExpansion(const size_t n)
 {
 	if (n == 0) 
 	{
@@ -178,7 +178,7 @@ void myVector::push_back(const unsigned int x)
 {
 	if (capacityGetter() < vectorSize + 1)
 	{
-		reserve(getCapacityForxpansion(vectorSize));
+		reserve(getCapacityForExpansion(vectorSize));
 	}
 	makeNewVector();
 	arrayPointer[vectorSize] = x;
