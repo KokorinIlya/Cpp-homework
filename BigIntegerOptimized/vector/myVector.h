@@ -1,5 +1,5 @@
-#ifndef MY_UI_VECTOR
-#define MY_UI_VECTOR
+#ifndef MY_VECTOR
+#define MY_VECTOR
 
 #include <memory>
 #include "myData.h"
