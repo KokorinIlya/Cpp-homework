@@ -1,5 +1,6 @@
 #include "myVector.h"
 #include "deleter.h"
+#include <cassert>
 
 const size_t UINT_SIZE = sizeof(unsigned int);
 
@@ -72,6 +73,13 @@ myVector::myVector(size_t needSize) : myVector()
 	reserve(needSize);
 	memset(arrayPointer, 0, needSize * UINT_SIZE);
 	vectorSize = needSize;
+}
+
+myVector::myVector(unsigned int* pointer, size_t n) : myVector()
+{
+	reserve(n);
+	copyData(arrayPointer, pointer, n);
+	vectorSize = n;
 }
 
 myVector::~myVector()
@@ -147,12 +155,13 @@ unsigned int const& myVector::operator[](size_t ind) const
 
 unsigned int& myVector::operator[](size_t ind)
 {
-	makeNewVector();
+	assert(!isBig || data.bigObject.bigObjectPointer.unique());
 	return arrayPointer[ind];
 }
 
-unsigned int* myVector::getData() const
+unsigned int* myVector::getData()
 {
+	makeNewVector();
 	return arrayPointer;
 }
 
@@ -163,7 +172,7 @@ bool myVector::empty() const
 
 void myVector::pop_back() 
 {
-	makeNewVector();
+	assert(!isBig || data.bigObject.bigObjectPointer.unique());
 	vectorSize--;
 }
 

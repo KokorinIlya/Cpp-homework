@@ -11,6 +11,7 @@ public:
 	explicit myVector(size_t needSize);
 	myVector(myVector const &other);
 	myVector(std::initializer_list<unsigned int> const& list);
+	myVector(unsigned int* pointer, size_t n);
 
 	~myVector();
 
@@ -28,7 +29,7 @@ public:
 
 	void swap(myVector &other) noexcept;
 
-	unsigned int* getData() const;
+	unsigned int* getData();
 
 	friend bool operator==(const myVector &a, const myVector &b);
 

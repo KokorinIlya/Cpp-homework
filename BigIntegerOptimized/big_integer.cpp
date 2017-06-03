@@ -118,14 +118,14 @@ void big_integer::swap(big_integer &other) noexcept
 
 unsigned int big_integer::getDigit(size_t ind) const 
 {
-	return data[ind];
+	return static_cast<myVector const&>(data)[ind];
 }
 
 unsigned int big_integer::getInfDigit(size_t ind) const
 {
 	if (ind < length())
 	{
-		return data[ind];
+		return static_cast<myVector const&>(data)[ind];
 	}
 	 if (sign) 
 	{
@@ -134,10 +134,9 @@ unsigned int big_integer::getInfDigit(size_t ind) const
 	return 0;
 }
 
-
-void big_integer::normalize() 
+void big_integer::normalize()
 {
-	while (!data.empty() && (!sign && data.back() == 0 || sign && data.back() == MAX_DIGIT)) 
+	while (!data.empty() && (!sign && data.back() == 0 || sign && data.back() == MAX_DIGIT))
 	{
 		data.pop_back();
 	}
@@ -150,10 +149,7 @@ big_integer::big_integer(bool _sign, myVector const & _data) : sign(_sign), data
 
 big_integer::big_integer() : sign(false), data(0) {}
 
-big_integer::big_integer(big_integer const & other) : sign(other.sign), data(other.data) 
-{
-	normalize();
-}
+big_integer::big_integer(big_integer const & other) : sign(other.sign), data(other.data) {}
 
 big_integer::big_integer(int a) : sign(a < 0), data{ static_cast <unsigned int>(a) }
 {
@@ -236,9 +232,10 @@ big_integer operator~(big_integer const& a)
 {
 	size_t size = a.length();
 	myVector temp(size);
+	unsigned int* tempData = temp.getData();
 	for (size_t i = 0; i < size; i++)
 	{
-		temp[i] = ~a.getInfDigit(i);
+		tempData[i] = ~a.getDigit(i);
 	}
 	return big_integer(!a.isNegative(), temp);
 }
@@ -274,9 +271,10 @@ big_integer abstractBitOperation(big_integer const& first, big_integer const& se
 {
 	size_t size = max(first.length(), second.length());
 	myVector temp(size);
+	unsigned int* tempData = temp.getData();
 	for (size_t i = 0; i < size; i++)
 	{
-		temp[i] = doBitOperation(first.getInfDigit(i), second.getInfDigit(i), mode);
+		tempData[i] = doBitOperation(first.getInfDigit(i), second.getInfDigit(i), mode);
 	}
 	return big_integer(doBitOperation(first.isNegative(), second.isNegative(), mode), temp);
 }
@@ -312,12 +310,13 @@ big_integer operator<<(big_integer const& first, int shift)
 	//casts are safe, shift > 0, numberOfDigits > 0
 	size_t size = static_cast<size_t>(first.length() + div + 1);
 	myVector temp(size);
-	temp[div] = static_cast<unsigned int>((first.getInfDigit(0) << mod) & (base - 1));
+	unsigned int* tempData = temp.getData();
+	tempData[div] = static_cast<unsigned int>((first.getInfDigit(0) << mod) & (base - 1));
 	for (size_t i = static_cast<size_t>(div + 1); i < size; i++)
 	{
 		unsigned int firstDigit = first.getInfDigit(static_cast<unsigned int>(i - div));
 		unsigned int secondDigit = first.getInfDigit(static_cast<unsigned int>(i - div - 1));
-		temp[i] = static_cast<unsigned int>(static_cast<unsigned long long>(firstDigit << mod)
+		tempData[i] = static_cast<unsigned int>(static_cast<unsigned long long>(firstDigit << mod)
 			| static_cast<unsigned long long>(secondDigit) >> (numberOfDigits - mod));
 	}
 	return big_integer(first.isNegative(), temp);
@@ -344,11 +343,12 @@ big_integer operator>>(big_integer const& first, int shift)
 	size_t size = static_cast<size_t>(first.length() - div);
 	//cast is safe, size >= div
 	myVector temp(size);
+	unsigned int* tempData = temp.getData();
 	for (size_t i = 0; i < size; i++)
 	{
 		unsigned int firstDigit = first.getInfDigit(static_cast<unsigned int>(i + div));
 		unsigned int secondDigit = first.getInfDigit(static_cast<unsigned int>(i + div + 1));
-		temp[i] = static_cast<unsigned int>((static_cast<unsigned long long>(firstDigit) >> mod)
+		tempData[i] = static_cast<unsigned int>((static_cast<unsigned long long>(firstDigit) >> mod)
 			| (static_cast<unsigned long long>(secondDigit) << (numberOfDigits - mod)));
 	}
 	return big_integer(first.isNegative(), temp);
@@ -460,14 +460,15 @@ big_integer operator+(big_integer const& first, big_integer const& second)
 	unsigned long long carry = 0;
 	size_t size = max(first.data.size(), second.data.size()) + 1;
 	myVector temp(size);
+	unsigned int* tempData = temp.getData();
 	for (size_t i = 0; i < size; i++)
 	{
 		unsigned long long curValue = carry + first.getInfDigit(i) + second.getInfDigit(i);
 		carry = curValue >> numberOfDigits; //equals carry = (sum / 2^32)
-		temp[i] = static_cast<unsigned int>(curValue & (base - 1)); // equals temp[i] = (sum % 2^32)
+		tempData[i] = static_cast<unsigned int>(curValue & (base - 1)); // equals temp[i] = (sum % 2^32)
 																	//cast is safe, base - 1 == 2^32 - 1 => curValue & (base - 1) <= 2^32 - 1 => safe cast to UInt
 	}
-	bool sgn = ((temp[size - 1] >> (numberOfDigits - 1)) > 0);
+	bool sgn = ((tempData[size - 1] >> (numberOfDigits - 1)) > 0);
 	return big_integer(sgn, temp); //construct from <bool, vetor>
 }
 big_integer operator-(big_integer const &a, big_integer const &b) 
@@ -489,6 +490,7 @@ big_integer operator*(big_integer const& first, big_integer const& second)
 	big_integer absFirst(first.abs());
 	big_integer absSecond(second.abs());
 	myVector temp(absFirst.length() + absSecond.length() + 1);
+	unsigned int* tempData = temp.getData();
 	if (absFirst.length() > absSecond.length())
 	{
 		swap(absFirst, absSecond);
@@ -504,19 +506,19 @@ big_integer operator*(big_integer const& first, big_integer const& second)
 			unsigned int tmpMod = static_cast<unsigned int>(tmp & (base - 1)); //equals tmp % (2 ^ 32)
 																			   //cast is safe: base - 1 == 2 ^ 32 - 1 => x & (2 ^ 32 - 1) < 2 ^ 32 - 1 => safe cast to UInt
 			unsigned long long tmpDiv = tmp >> numberOfDigits; //equals tmp / (2 ^ 32)
-
-			unsigned long long sum = carry + temp[k] + tmpMod;
+;
+			unsigned long long sum = carry + tempData[k] + tmpMod;
 			unsigned int sumMod = static_cast<unsigned int>(sum & (base - 1)); //equals sum % (2 ^ 32)
 																			   //cast is safe: base - 1 == 2 ^ 32 - 1 => x & (2 ^ 32 - 1) < 2 ^ 32 - 1 => safe cast to UInt
 			unsigned long long sumDiv = sum >> numberOfDigits; //equals sum / (2 ^ 32)
 
-			temp[k] = sumMod;
+			tempData[k] = sumMod;
 			carry = tmpDiv + sumDiv;
 		}
 		unsigned int carryMod = static_cast<unsigned int>(carry & (base - 1));
 		unsigned int carryDiv = static_cast<unsigned int>(carry >> numberOfDigits);
-		temp[i + absSecond.data.size()] += carryMod;
-		temp[i + absSecond.data.size() + 1] += carryDiv;
+		tempData[i + absSecond.data.size()] += carryMod;
+		tempData[i + absSecond.data.size() + 1] += carryDiv;
 	}
 	big_integer result(false, temp);
 	result.setSign(sign);
@@ -588,11 +590,12 @@ big_integer operator/(big_integer const& first, unsigned int second)
 	unsigned long long div = static_cast<unsigned long long>(second);
 	size_t size = absFirst.length();
 	myVector temp(size);
+	unsigned int* tempData = temp.getData();
 	unsigned long long carry = 0;
 	for (int i = size - 1; i >= 0; i--)
 	{
 		unsigned long long cur = absFirst.getDigit(static_cast<size_t>(i)) + carry * base;
-		temp[i] = static_cast<unsigned int>(cur / div);
+		tempData[i] = static_cast<unsigned int>(cur / div);
 		carry = cur % div;
 	}
 	big_integer T(false, temp);
@@ -628,11 +631,12 @@ big_integer getHighDigits(big_integer const& number, size_t n) //ïîëó÷àå�
 															   // è êîíñòðóèðóåò èç íåãî áèãèíò, åñëè öèôð < n, äîáèâàåò âåäóùèìè íóëÿìè
 {
 	myVector temp(n);
+	unsigned int* tempData = temp.getData();
 	for (size_t i = 0; i < temp.size(); i++)
 	{
 		if (i < number.data.size())
 		{
-			temp[temp.size() - i - 1] = number.getDigit(number.data.size() - i - 1);
+			tempData[temp.size() - i - 1] = number.getDigit(number.data.size() - i - 1);
 		}
 	}
 	return big_integer(false, temp);
@@ -665,14 +669,6 @@ unsigned int getNextDigit(big_integer const& first, big_integer const& second)
 		}
 		if (dig > 0)
 		{
-			/*while (dig > 0 && copyDivisor * dig > copyDivident)
-			{
-				dig--;
-			}
-			if (dig > 0)
-			{
-				return dig;
-			}*/
 			return dig;
 		}
 		divisor = divisor >> numberOfDigits;
@@ -704,15 +700,18 @@ big_integer operator/(big_integer const& first, big_integer const& second) {
 	{
 		size--;
 	}
-	myVector temp;
+	myVector temp(size + 1);
+	unsigned int* tempData = temp.getData();
 	for (int i = size; i >= 0; i--)
 	{
+		unsigned int* absFirstData = absFirst.data.getData();
 		unsigned int dig = getNextDigit(absFirst, absSecond);
 		big_integer tmp = dig * absSecond;
 		bool needCarry = false;
-		for (size_t j = static_cast<size_t>(i); j < absFirst.data.size(); j++) //cast is safe: i >= 0
+		size_t sz = absFirst.data.size();
+		for (size_t j = static_cast<size_t>(i); j < sz; j++) //cast is safe: i >= 0
 		{
-			long long res = absFirst.getDigit(j) - 1LL * needCarry;
+			long long res = absFirstData[j] - 1LL * needCarry;
 			if (j - i < tmp.data.size())
 			{
 				res -= tmp.getDigit(j - i);
@@ -723,13 +722,15 @@ big_integer operator/(big_integer const& first, big_integer const& second) {
 				needCarry = true;
 				res += base;
 			}
-			absFirst.data[j] = static_cast<unsigned int>(res);
+			absFirstData[j] = static_cast<unsigned int>(res);
 		}
+		absFirst.data = myVector(absFirstData, sz);
 		absFirst.normalize();
-		temp.push_back(dig);
+		tempData[size - i] = dig;
 	}
-	for (size_t i = 0; i < temp.size() / 2; i++) {
-		swap(temp[i], temp[temp.size() - 1 - i]);
+	for (size_t i = 0; i < temp.size() / 2; i++)
+	{
+		swap(tempData[i], tempData[temp.size() - 1 - i]);
 	}
 	big_integer result(false, temp);
 	result.setSign(sign);

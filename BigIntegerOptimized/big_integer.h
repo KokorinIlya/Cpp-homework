@@ -70,6 +70,7 @@ struct big_integer
 	void swap(big_integer &other) noexcept;
 	bool isNegative() const;
 	big_integer(bool new_sign, myVector const &new_data);
+	void normalize();
 private:
 	bool sign;
 	myVector data;
@@ -77,7 +78,6 @@ private:
 	size_t length() const;
 	unsigned int getInfDigit(size_t ind) const;
 	unsigned int getDigit(size_t ind) const;
-	void normalize();
 	void setSign(bool s);
 
 	friend big_integer abstractBitOperation(big_integer const& first, big_integer const& second, char mode);
