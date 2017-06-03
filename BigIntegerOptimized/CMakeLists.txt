@@ -8,7 +8,7 @@ add_executable(big_integer_testing
 			   vector/myVector.h
 			   vector/myVector.cpp
 			   vector/bigData.h
-			   vector/BigData.cpp
+			   vector/bigData.cpp
 			   vector/myData.h
 			   vector/deleter.h
                big_integer_testing.cpp
