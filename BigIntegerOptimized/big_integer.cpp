@@ -5,7 +5,6 @@
 #include <set>
 #include <limits>
 #include <climits>
-#include <vld.h>
 
 using namespace std;
 
