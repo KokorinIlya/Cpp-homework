@@ -313,7 +313,6 @@ big_integer operator<<(big_integer const& first, int shift)
 	size_t size = static_cast<size_t>(first.length() + div + 1);
 	myVector temp(size);
 	temp[div] = static_cast<unsigned int>((first.getInfDigit(0) << mod) & (base - 1));
-	temp[div + 1] = static_cast<unsigned int>((first.getInfDigit(0) >> (numberOfDigits - mod)) & (base - 1));
 	for (size_t i = static_cast<size_t>(div + 1); i < size; i++)
 	{
 		unsigned int firstDigit = first.getInfDigit(static_cast<unsigned int>(i - div));
@@ -572,7 +571,7 @@ big_integer transformStringToBigInteger(string const& str)
 }
 
 
-big_integer::big_integer(string const& str)
+big_integer::big_integer(string const& str) : big_integer()
 {
 	big_integer temp = transformStringToBigInteger(str);
 	swap(temp);
