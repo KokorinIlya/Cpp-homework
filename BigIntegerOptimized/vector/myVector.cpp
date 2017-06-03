@@ -123,7 +123,7 @@ inline void myVector::vectorFactory(size_t capacity)
 	arrayPointer = data.bigObject.bigObjectPointer.get();
 }
 
-inline void myVector::makeNewVector()
+void myVector::makeNewVector()
 {
 	if (isBig && !data.bigObject.bigObjectPointer.unique())
 	{
@@ -172,6 +172,7 @@ bool myVector::empty() const
 
 void myVector::pop_back() 
 {
+	assert(!isBig || data.bigObject.bigObjectPointer.unique());
 	vectorSize--;
 }
 

@@ -5,6 +5,7 @@
 #include <set>
 #include <limits>
 #include <climits>
+#include "vector/myVector.h"
 
 using namespace std;
 
@@ -144,6 +145,7 @@ void big_integer::normalize()
 
 big_integer::big_integer(bool _sign, myVector const & _data) : sign(_sign), data(_data)
 {
+	data.makeNewVector();
 	normalize();
 }
 
